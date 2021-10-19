@@ -3,6 +3,8 @@ package dev._2lstudios.squidgame.arena.games;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -58,22 +60,18 @@ public class G1RedGreenLightGame extends ArenaGameBase {
 
         final int time = NumberUtils.randomNumber(2, 5);
         this.getArena().broadcastTitle("games.first.green-light.title", "games.first.green-light.subtitle");
-        this.getArena().broadcastSound(
-                this.getArena().getMainConfig().getSound("game-settings.sounds.green-light", "GHAST_MOAN"));
+        this.getArena().broadcastSound(Sound.sound(Key.key("warfaremc.effect.greenlight"), Sound.Source.MASTER, 1, 1));
         this.canWalk = true;
 
         Bukkit.getScheduler().runTaskLater(SquidGame.getInstance(), () -> {
             this.getArena().broadcastTitle("games.first.red-light.title", "games.first.red-light.subtitle");
-            this.getArena().broadcastSound(
-                    this.getArena().getMainConfig().getSound("game-settings.sounds.red-light", "BLAZE_HIT"));
+            this.getArena().broadcastSound(Sound.sound(Key.key("warfaremc.effect.redlight"), Sound.Source.MASTER, 1, 1));
             Bukkit.getScheduler().runTaskLater(SquidGame.getInstance(), () -> {
                 this.canWalk = false;
                 final int waitTime = NumberUtils.randomNumber(2, 5);
-                Bukkit.getScheduler().runTaskLater(SquidGame.getInstance(), () -> {
-                    singDoll();
-                }, waitTime * 20);
+                Bukkit.getScheduler().runTaskLater(SquidGame.getInstance(), this::singDoll, waitTime * 20L);
             }, 20);
-        }, time * 20);
+        }, time * 20L);
     }
 
     @Override

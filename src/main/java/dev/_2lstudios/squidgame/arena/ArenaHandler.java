@@ -39,7 +39,6 @@ public class ArenaHandler {
 
     public void handlePlayerLeave(final SquidPlayer player) {
         if (this.arena.getState() == ArenaState.FINISHING_ARENA) {
-            return;
         }
 
         else if (this.arena.getState() == ArenaState.WAITING || this.arena.getState() == ArenaState.STARTING) {
@@ -102,7 +101,7 @@ public class ArenaHandler {
             if (arena.getInternalTime() == 0) {
                 arena.setState(ArenaState.EXPLAIN_GAME);
                 arena.teleportAllPlayers(arena.getSpawnPosition());
-                arena.setInternalTime(15);
+                arena.setInternalTime(25);
                 arena.getCurrentGame().onExplainStart();
             }
         }

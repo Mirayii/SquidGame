@@ -2,6 +2,7 @@ package dev._2lstudios.squidgame.player;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import dev._2lstudios.jelly.player.PluginPlayer;
@@ -85,4 +86,5 @@ public class SquidPlayer extends PluginPlayer {
         this.plugin.getScoreboardHook().request(this.getBukkitPlayer(),
                 this.plugin.getScoreboardConfig().getStringList(scoreboardKey));
     }
+
 }

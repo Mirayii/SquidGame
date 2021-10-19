@@ -1,10 +1,11 @@
 package dev._2lstudios.jelly.player;
 
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import dev._2lstudios.jelly.utils.ServerUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class PluginPlayer {
     private final Player player;
@@ -17,10 +18,8 @@ public class PluginPlayer {
         return this.player;
     }
 
-    public void playSound(final Sound sound) {
-        if (sound != null) {
-            this.getBukkitPlayer().playSound(this.getBukkitPlayer().getLocation(), sound, 1, 1);
-        }
+    public void playSound(final @NotNull Sound sound) {
+        this.getBukkitPlayer().playSound(sound, Sound.Emitter.self());
     }
 
     public void teleport(final Location loc) {
@@ -42,4 +41,9 @@ public class PluginPlayer {
         }
     }
 
+    public void playSound(org.bukkit.Sound sound) {
+        if (sound != null) {
+            this.getBukkitPlayer().playSound(this.getBukkitPlayer().getLocation(), sound, 1, 1);
+        }
+    }
 }

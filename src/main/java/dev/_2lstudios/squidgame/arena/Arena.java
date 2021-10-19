@@ -3,6 +3,7 @@ package dev._2lstudios.squidgame.arena;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kyori.adventure.key.Key;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -14,6 +15,7 @@ import dev._2lstudios.squidgame.arena.games.ArenaGameBase;
 import dev._2lstudios.squidgame.arena.games.G1RedGreenLightGame;
 import dev._2lstudios.squidgame.arena.games.G7SquidGame;
 import dev._2lstudios.squidgame.player.SquidPlayer;
+import org.jetbrains.annotations.NotNull;
 
 public class Arena {
     private final List<SquidPlayer> players;
@@ -84,10 +86,15 @@ public class Arena {
             player.playSound(sound);
         }
     }
+    public void broadcastSound(@NotNull net.kyori.adventure.sound.Sound sound) {
+        for (final SquidPlayer player : this.getAllPlayers()) {
+            player.playSound(sound);
+        }
+    }
 
     public void broadcastTitle(final String title, final String subtitle) {
         for (final SquidPlayer player : this.getAllPlayers()) {
-            player.sendTitle(title, subtitle, 2);
+            player.sendTitle(title, subtitle, 5);
         }
     }
 
@@ -162,7 +169,7 @@ public class Arena {
 
         for (final SquidPlayer player : list) {
             this.death = player.getBukkitPlayer().getName();
-            this.broadcastSound(this.getMainConfig().getSound("game-settings.sounds.player-death", "EXPLODE"));
+            this.broadcastSound(net.kyori.adventure.sound.Sound.sound(Key.key("warfaremc.effect.greenlight"), net.kyori.adventure.sound.Sound.Source.MASTER, 1, 1));
             this.broadcastMessage("arena.death");
         }
 
@@ -175,15 +182,11 @@ public class Arena {
         }
 
         this.death = player.getBukkitPlayer().getName();
-        this.broadcastSound(this.getMainConfig().getSound("game-settings.sounds.player-death", "EXPLODE"));
+        this.broadcastSound(net.kyori.adventure.sound.Sound.sound(Key.key("warfaremc.effect.shot"), net.kyori.adventure.sound.Sound.Source.MASTER, 1, 1));
         this.broadcastMessage("arena.death");
 
         if (this.isAllPlayersDeath()) {
             this.finishArena(ArenaFinishReason.ALL_PLAYERS_DEATH);
-        }
-
-        else if (this.calculateWinner() != null) {
-            this.finishArena(ArenaFinishReason.ONE_PLAYER_IN_ARENA);
         }
     }
 
@@ -221,7 +224,7 @@ public class Arena {
             return;
         }
 
-        player.getBukkitPlayer().setGameMode(GameMode.SURVIVAL);
+        player.getBukkitPlayer().setGameMode(GameMode.ADVENTURE);
         player.teleportToLobby();
         player.sendScoreboard("lobby");
         player.setArena(null);
